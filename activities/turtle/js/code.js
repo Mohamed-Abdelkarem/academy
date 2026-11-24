@@ -79,8 +79,16 @@ export function init(level, T, solved, onSolved) {
   if (level.target || level.starter) {
     B = boardFor([level.target, level.solution, level.starter].filter(Boolean).map(tryDraw));
   } else {
-    const far = Math.max(0, ...tryDraw(text).flat().map(Math.abs));
-    B = { cx: 0, cy: 0, half: Math.max(300, Math.ceil((far + 40) / 50) * 50) };
+    // the normal sheet: -300..300, so "fd 100" is a real step. Only a program sent from the arrows
+    // may move the sheet (never grow it past 350): it fits in a 600×600 grid, so the sheet is centred on it.
+    B = { cx: 0, cy: 0, half: 300 };
+    const fromArrows = level.id === 'write' && params.get('from') === 'arrows' ? tryDraw(text) : [];
+    if (fromArrows.length) {
+      const xs = fromArrows.flatMap(([a, , c]) => [a, c]), ys = fromArrows.flatMap(([, b, , d]) => [b, d]);
+      const x0 = Math.min(0, ...xs), x1 = Math.max(0, ...xs), y0 = Math.min(0, ...ys), y1 = Math.max(0, ...ys);
+      const half = Math.min(350, Math.max(300, Math.ceil((Math.max(x1 - x0, y1 - y0) / 2 + 40) / 50) * 50));
+      if (Math.max(-x0, x1, -y0, y1) + 40 > 300) B = { cx: Math.round((x0 + x1) / 100) * 50, cy: Math.round((y0 + y1) / 100) * 50, half };
+    }
   }
   const S = 2 * B.half, k = S / REF;
   const svg = el('svg', { viewBox: `${B.cx - B.half} ${-B.cy - B.half} ${S} ${S}`, class: 'board-svg', role: 'img', 'aria-label': T.title });
