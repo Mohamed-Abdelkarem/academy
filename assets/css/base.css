@@ -44,6 +44,7 @@ a { color: var(--blue); }
   color: #fff;
 }
 .site-header a { color: #fff; text-decoration: none; }
+.site-header .header-actions { display: flex; gap: 8px; }
 .site-header .brand { font-family: var(--font-title); font-size: 1.3rem; }
 @media (max-width: 520px) {
   .site-header { padding: 8px 12px; }

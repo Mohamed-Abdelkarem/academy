@@ -1,31 +1,66 @@
 // Maze blocks for Blockly (global `Blockly`, loaded by a <script> tag before this module)
 // and the conversion from the workspace to an engine program.
-// Text matches the S3–S4 slides: Blockly Games' Arabic wording + the English term for
+// Arabic text matches the S3–S4 slides: Blockly Games' Arabic wording + the English term for
 // programming concepts (repeat until · if · else), as the deck checklist requires.
 
 const MOVEMENT_HUE = 290;
 const LOOPS_HUE = 120;
 const LOGIC_HUE = 210;
 
-const PATH_OPTIONS = [
-  ['إذا (if) هناك مسار في الأمام', 'ahead'],
-  ['إذا (if) كان المسار إلى اليسار', 'left'],
-  ['إذا (if) كان المسار إلى اليمين', 'right'],
-];
+const TEXT = {
+  ar: {
+    move: 'تحرّك إلى الأمام ⬆️',
+    left: 'استدر إلى اليسار ↺',
+    right: 'استدر إلى اليمين ↻',
+    repeat: 'كرِّر حتى (repeat until) 🏁 %1 افعل %2',
+    ifAhead: 'إذا (if) هناك مسار في الأمام',
+    ifLeft: 'إذا (if) كان المسار إلى اليسار',
+    ifRight: 'إذا (if) كان المسار إلى اليمين',
+    do: 'افعل',
+    else: 'وإلا (else)',
+    tipMove: 'الباندا يتحرك خطوة واحدة لقدام',
+    tipTurn: 'الباندا يلف ربع لفة شمال أو يمين',
+    tipRepeat: 'كرّر البلوكات اللي جوه لحد ما الباندا يوصل للعلم',
+    tipIf: 'لو فيه طريق في الاتجاه ده، اعمل اللي جوه',
+    tipIfElse: 'لو فيه طريق اعمل الأولاني، وإلا اعمل التاني',
+  },
+  en: {
+    move: 'move forward ⬆️',
+    left: 'turn left ↺',
+    right: 'turn right ↻',
+    repeat: 'repeat until 🏁 %1 do %2',
+    ifAhead: 'if path ahead',
+    ifLeft: 'if path to the left',
+    ifRight: 'if path to the right',
+    do: 'do',
+    else: 'else',
+    tipMove: 'Moves the panda one step forward',
+    tipTurn: 'Turns the panda left or right by 90 degrees',
+    tipRepeat: 'Repeats the blocks inside until the panda reaches the flag',
+    tipIf: 'If there is a path that way, do the blocks inside',
+    tipIfElse: 'If there is a path, do the first part, else do the second',
+  },
+};
 
 let defined = false;
 
-export function defineBlocks() {
+export function defineBlocks(lang = 'ar') {
   if (defined) return;
   defined = true;
+  const t = TEXT[lang] || TEXT.ar;
+  const PATH_OPTIONS = [
+    [t.ifAhead, 'ahead'],
+    [t.ifLeft, 'left'],
+    [t.ifRight, 'right'],
+  ];
   Blockly.defineBlocksWithJsonArray([
     {
       type: 'maze_move',
-      message0: 'تحرّك إلى الأمام ⬆️',
+      message0: t.move,
       previousStatement: null,
       nextStatement: null,
       colour: MOVEMENT_HUE,
-      tooltip: 'الباندا يتحرك خطوة واحدة لقدام',
+      tooltip: t.tipMove,
     },
     {
       type: 'maze_turn',
@@ -35,27 +70,27 @@ export function defineBlocks() {
           type: 'field_dropdown',
           name: 'DIR',
           options: [
-            ['استدر إلى اليسار ↺', 'left'],
-            ['استدر إلى اليمين ↻', 'right'],
+            [t.left, 'left'],
+            [t.right, 'right'],
           ],
         },
       ],
       previousStatement: null,
       nextStatement: null,
       colour: MOVEMENT_HUE,
-      tooltip: 'الباندا يلف ربع لفة شمال أو يمين',
+      tooltip: t.tipTurn,
     },
     {
       type: 'maze_repeat_until',
-      message0: 'كرِّر حتى (repeat until) 🏁 %1 افعل %2',
+      message0: t.repeat,
       args0: [{ type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
       previousStatement: null,
       colour: LOOPS_HUE,
-      tooltip: 'كرّر البلوكات اللي جوه لحد ما الباندا يوصل للعلم',
+      tooltip: t.tipRepeat,
     },
     {
       type: 'maze_if',
-      message0: '%1 %2 افعل %3',
+      message0: `%1 %2 ${t.do} %3`,
       args0: [
         { type: 'field_dropdown', name: 'DIR', options: PATH_OPTIONS },
         { type: 'input_dummy' },
@@ -64,11 +99,11 @@ export function defineBlocks() {
       previousStatement: null,
       nextStatement: null,
       colour: LOGIC_HUE,
-      tooltip: 'لو فيه طريق في الاتجاه ده، اعمل اللي جوه',
+      tooltip: t.tipIf,
     },
     {
       type: 'maze_if_else',
-      message0: '%1 %2 افعل %3 وإلا (else) %4',
+      message0: `%1 %2 ${t.do} %3 ${t.else} %4`,
       args0: [
         { type: 'field_dropdown', name: 'DIR', options: PATH_OPTIONS },
         { type: 'input_dummy' },
@@ -78,7 +113,7 @@ export function defineBlocks() {
       previousStatement: null,
       nextStatement: null,
       colour: LOGIC_HUE,
-      tooltip: 'لو فيه طريق اعمل الأولاني، وإلا اعمل التاني',
+      tooltip: t.tipIfElse,
     },
   ]);
 }

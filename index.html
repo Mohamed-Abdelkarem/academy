@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@400;700&display=swap">
   <link rel="stylesheet" href="assets/css/base.css">
+  <script src="assets/js/boot-lang.js"></script>
   <style>
     .hero { text-align: center; padding: 32px 16px 8px; }
     .hero p { margin: 0; }
@@ -22,46 +23,68 @@
 </head>
 <body>
   <header class="site-header">
-    <span class="brand">🏠 الأكاديمية</span>
-    <a href="#" id="code-btn" class="btn btn-ghost">🔑 عندي كود</a>
+    <span class="brand" data-i18n="home">🏠 الأكاديمية</span>
+    <span class="header-actions">
+      <button id="lang-btn" class="btn btn-ghost" type="button">English</button>
+      <button id="code-btn" class="btn btn-ghost" type="button" data-i18n="haveCode">🔑 عندي كود</button>
+    </span>
   </header>
 
   <section class="hero">
-    <h1>يلا نبرمج! 🚀</h1>
-    <p class="muted">اختار اللعبة اللي المدرس قالك عليها</p>
+    <h1 data-i18n="hero">يلا نبرمج! 🚀</h1>
+    <p class="muted" data-i18n="heroNote">اختار اللعبة اللي المدرس قالك عليها</p>
   </section>
 
   <section class="grid">
     <a class="card activity" href="activities/maze/">
       <span class="icon">🐼</span>
-      <h2>متاهة الباندا</h2>
-      <span class="muted">برمج الباندا بالبلوكات عشان يوصل للعلم</span>
-      <span class="tag">حصة 3 و 4</span>
+      <h2 data-i18n="mazeTitle">متاهة الباندا</h2>
+      <span class="muted" data-i18n="mazeText">برمج الباندا بالبلوكات عشان يوصل للعلم</span>
+      <span class="tag" data-i18n="mazeTag">حصة 3 و 4</span>
     </a>
     <div class="card activity soon">
       <span class="icon">🐢</span>
-      <h2>سُلحفى الرسّام</h2>
-      <span class="muted">قريب</span>
+      <h2 data-i18n="turtleTitle">سُلحفى الرسّام</h2>
+      <span class="muted" data-i18n="soon">قريب</span>
     </div>
   </section>
 
   <footer>
-    <button id="reset-btn" class="btn btn-ghost muted" type="button">مسح التقدم من الجهاز ده</button>
+    <button id="reset-btn" class="btn btn-ghost muted" type="button" data-i18n="clear">مسح التقدم من الجهاز ده</button>
   </footer>
 
   <script type="module">
     import { askForCode, showMessage } from './assets/js/core/ui.js';
     import { clearAll } from './assets/js/core/storage.js';
-    document.getElementById('code-btn').addEventListener('click', async (e) => {
-      e.preventDefault();
+    import { pick, applyStrings, wireLangButton } from './assets/js/core/i18n.js';
+    const STRINGS = {
+      ar: {
+        pageTitle: 'الأكاديمية — ألعاب البرمجة', home: '🏠 الأكاديمية', haveCode: '🔑 عندي كود',
+        hero: 'يلا نبرمج! 🚀', heroNote: 'اختار اللعبة اللي المدرس قالك عليها',
+        mazeTitle: 'متاهة الباندا', mazeText: 'برمج الباندا بالبلوكات عشان يوصل للعلم', mazeTag: 'حصة 3 و 4',
+        turtleTitle: 'سُلحفى الرسّام', soon: 'قريب', clear: 'مسح التقدم من الجهاز ده',
+        unlocked: 'اتفتح!', clearQ: 'تمسح كل التقدم والأكواد من الجهاز ده؟', yes: 'امسح', no: 'لأ',
+      },
+      en: {
+        pageTitle: 'Academy — Coding Games', home: '🏠 Academy', haveCode: '🔑 I have a code',
+        hero: "Let's code! 🚀", heroNote: 'Pick the game your teacher told you about',
+        mazeTitle: 'Panda Maze', mazeText: 'Program the panda with blocks to reach the flag', mazeTag: 'Classes 3 & 4',
+        turtleTitle: 'Turtle Artist', soon: 'Coming soon', clear: 'Clear progress on this device',
+        unlocked: 'Unlocked!', clearQ: 'Clear all progress and codes on this device?', yes: 'Clear', no: 'No',
+      },
+    };
+    const T = pick(STRINGS);
+    applyStrings(STRINGS);
+    wireLangButton(document.getElementById('lang-btn'));
+    document.getElementById('code-btn').addEventListener('click', async () => {
       const entry = await askForCode();
-      if (entry) await showMessage({ icon: '🎉', title: 'اتفتح!', text: entry.label });
+      if (entry) await showMessage({ icon: '🎉', title: T.unlocked, text: pick(entry.label) });
     });
     document.getElementById('reset-btn').addEventListener('click', async () => {
       const ok = await showMessage({
         icon: '🧹',
-        title: 'تمسح كل التقدم والأكواد من الجهاز ده؟',
-        buttons: [{ label: 'امسح', value: true, kind: 'accent' }, { label: 'لأ', value: false }],
+        title: T.clearQ,
+        buttons: [{ label: T.yes, value: true, kind: 'accent' }, { label: T.no, value: false }],
       });
       if (ok) { clearAll(); location.reload(); }
     });

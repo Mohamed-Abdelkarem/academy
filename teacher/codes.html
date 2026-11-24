@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔑</text></svg>">
+  <title>أداة الأكواد — للمدرس</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@400;700&display=swap">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <style>
+    main { max-width: 720px; margin: 24px auto; padding: 0 16px; display: grid; gap: 16px; }
+    label { display: block; font-weight: 700; margin: 10px 0 4px; }
+    input[type=text], select { font: inherit; width: 100%; padding: 8px 12px; border-radius: 10px; border: 2px solid var(--mint); }
+    .levels { display: flex; flex-wrap: wrap; gap: 10px; }
+    pre { direction: ltr; text-align: left; background: var(--dark); color: #fff; padding: 14px; border-radius: 12px; white-space: pre-wrap; word-break: break-all; }
+    ol { padding-inline-start: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="../">🏠 الأكاديمية</a><strong>أداة الأكواد (للمدرس)</strong></header>
+  <main>
+    <section class="card">
+      <h2>كود جديد</h2>
+      <p class="muted">الكود نفسه مابيتحفظش في الموقع، الموقع بيحفظ بصمته (hash) بس. احتفظ بالكود عندك.</p>
+      <label for="code">الكود</label>
+      <input id="code" type="text" autocomplete="off" placeholder="مثلًا 4821">
+      <label for="label">اسمه (يظهر للطفل بعد ما يفتح)</label>
+      <input id="label" type="text" placeholder="حصة 3 — المتاهة 1–5">
+      <label><input id="all" type="checkbox"> كود مدرس (يفتح كل حاجة)</label>
+      <div id="levels-wrap">
+        <label>المتاهة: المستويات اللي يفتحها</label>
+        <div class="levels" id="levels"></div>
+      </div>
+      <p><button id="make" class="btn btn-primary" type="button">اعمل السطر</button></p>
+      <pre id="out">…</pre>
+    </section>
+    <section class="card">
+      <h2>إزاي تحطه في الموقع</h2>
+      <ol>
+        <li>افتح <a href="https://github.com/Mohamed-Abdelkarem/academy/edit/main/config/access-codes.js" target="_blank" rel="noopener">config/access-codes.js على GitHub</a> (القلم = تعديل).</li>
+        <li>الصق السطر جوه القايمة <code>ACCESS_CODES</code> (ولو بتغيّر كود قديم، امسح بتاعه).</li>
+        <li>Commit changes. الموقع بيتحدّث بعد دقيقة أو اتنين.</li>
+      </ol>
+      <p class="muted">أو ابعت لـ Claude: "غيّر كود حصة 3 لـ …" وهو يعملها.</p>
+    </section>
+  </main>
+  <script type="module">
+    import { SALT, normalizeCode } from '../assets/js/core/code-format.js';
+    const box = document.getElementById('levels');
+    for (let i = 1; i <= 10; i++) {
+      box.insertAdjacentHTML('beforeend', `<label><input type="checkbox" value="${i}"> ${i}</label>`);
+    }
+    document.getElementById('all').addEventListener('change', (e) => {
+      document.getElementById('levels-wrap').hidden = e.target.checked;
+    });
+    async function sha256Hex(text) {
+      const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+      return [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
+    document.getElementById('make').addEventListener('click', async () => {
+      const code = normalizeCode(document.getElementById('code').value);
+      const out = document.getElementById('out');
+      if (!code) { out.textContent = 'اكتب الكود الأول'; return; }
+      const label = (document.getElementById('label').value || code).replace(/'/g, '’');
+      const hash = await sha256Hex(SALT + code);
+      const all = document.getElementById('all').checked;
+      const levels = [...box.querySelectorAll('input:checked')].map((c) => Number(c.value));
+      const grant = all ? 'all: true,' : `grants: { maze: [${levels.join(', ')}] },`;
+      out.textContent = `  {\n    label: { ar: '${label}', en: '${label}' },\n    hash: '${hash}',\n    ${grant}\n  },`;
+    });
+  </script>
+</body>
+</html>

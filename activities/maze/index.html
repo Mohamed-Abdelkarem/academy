@@ -9,15 +9,19 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@400;700&display=swap">
   <link rel="stylesheet" href="../../assets/css/base.css">
   <link rel="stylesheet" href="maze.css">
+  <script src="../../assets/js/boot-lang.js"></script>
   <script src="../../vendor/blockly/13.5.0/blockly_compressed.js"></script>
-  <script src="../../vendor/blockly/13.5.0/msg/ar.js"></script>
+  <script>document.write('<script src="../../vendor/blockly/13.5.0/msg/' + window.ACADEMY_LANG + '.js"><\/script>');</script>
   <script type="module" src="js/main.js"></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="../../">🏠 الأكاديمية</a>
-    <strong class="page-title">متاهة الباندا 🐼</strong>
-    <button id="code-btn" class="btn btn-ghost" type="button">🔑 عندي كود</button>
+    <a class="brand" href="../../" data-i18n="home">🏠 الأكاديمية</a>
+    <strong class="page-title" data-i18n="title">متاهة الباندا 🐼</strong>
+    <span class="header-actions">
+      <button id="lang-btn" class="btn btn-ghost" type="button">English</button>
+      <button id="code-btn" class="btn btn-ghost" type="button" data-i18n="haveCode">🔑 عندي كود</button>
+    </span>
   </header>
 
   <nav id="level-bar" class="level-bar" aria-label="المستويات"></nav>
@@ -25,8 +29,8 @@
   <section id="locked" class="locked-panel card" hidden>
     <div class="big">🔒</div>
     <h2 id="locked-title">المستوى مقفول</h2>
-    <p class="muted">المدرس هيدّيك كود الحصة عشان تفتحه</p>
-    <button id="unlock-btn" class="btn btn-primary" type="button">اكتب الكود</button>
+    <p class="muted" data-i18n="lockedNote">المدرس هيدّيك كود الحصة عشان تفتحه</p>
+    <button id="unlock-btn" class="btn btn-primary" type="button" data-i18n="enterCode">اكتب الكود</button>
   </section>
 
   <main id="game" class="game" hidden>
@@ -37,8 +41,8 @@
       </div>
       <div id="maze" class="maze"></div>
       <div class="controls">
-        <button id="run-btn" class="btn btn-primary" type="button">▶ شغّل البرنامج</button>
-        <button id="reset-btn" class="btn" type="button">↺ من الأول</button>
+        <button id="run-btn" class="btn btn-primary" type="button" data-i18n="run">▶ شغّل البرنامج</button>
+        <button id="reset-btn" class="btn" type="button" data-i18n="reset">↺ من الأول</button>
         <button id="hint-btn" class="btn" type="button">💡</button>
       </div>
       <label class="speed">

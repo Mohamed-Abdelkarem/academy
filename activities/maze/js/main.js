@@ -6,6 +6,10 @@ import { MazeView } from './renderer.js';
 import { isUnlocked } from '../../../assets/js/core/access.js';
 import { askForCode, showMessage } from '../../../assets/js/core/ui.js';
 import { load, save } from '../../../assets/js/core/storage.js';
+import { getLang, isRtl, pick, applyStrings, wireLangButton } from '../../../assets/js/core/i18n.js';
+import { STRINGS } from './strings.js';
+
+const T = pick(STRINGS);
 
 const ACTIVITY = 'maze';
 const $ = (sel) => document.querySelector(sel);
@@ -46,7 +50,7 @@ function renderLevelBar(current) {
     if (!open) a.classList.add('locked');
     if (solved.has(l.id)) a.classList.add('solved');
     a.textContent = open ? String(l.id) : '🔒';
-    a.setAttribute('aria-label', `المستوى ${l.id}${open ? '' : ' مقفول'}`);
+    a.setAttribute('aria-label', open ? T.level(l.id) : T.lockedDot(l.id));
     bar.append(a);
   }
 }
@@ -59,22 +63,22 @@ async function unlockFlow() {
 function showLocked(level) {
   $('#locked').hidden = false;
   $('#game').hidden = true;
-  $('#locked-title').textContent = `المستوى ${level.id} مقفول`;
+  $('#locked-title').textContent = T.locked(level.id);
   $('#unlock-btn').addEventListener('click', unlockFlow);
 }
 
 function startGame(level) {
   $('#locked').hidden = true;
   $('#game').hidden = false;
-  $('#level-title').textContent = `المستوى ${level.id}`;
+  $('#level-title').textContent = T.level(level.id);
 
   const view = new MazeView($('#maze'));
   view.draw(level.map);
 
-  defineBlocks();
+  defineBlocks(getLang());
   const ws = Blockly.inject($('#blockly'), {
     toolbox: toolboxFor(level),
-    rtl: true,
+    rtl: isRtl(),
     maxBlocks: level.maxBlocks,
     media: '../../vendor/blockly/13.5.0/media/',
     trashcan: true,
@@ -97,7 +101,7 @@ function startGame(level) {
   }
   if (!restored) {
     Blockly.serialization.blocks.append(
-      { type: 'maze_move', x: 0, y: 24, movable: !level.startLocked, deletable: !level.startLocked },
+      { type: 'maze_move', x: 0, y: 24 },
       ws,
     );
   }
@@ -111,7 +115,7 @@ function startGame(level) {
     }
     const left = ws.remainingCapacity();
     capacity.hidden = false;
-    capacity.textContent = left === 1 ? 'فاضلك بلوك واحد' : `فاضلك ${left} بلوك`;
+    capacity.textContent = left === 1 ? T.left1 : T.leftN(left);
     capacity.classList.toggle('empty', left <= 0);
   };
   updateCapacity();
@@ -146,8 +150,8 @@ function startGame(level) {
     if (!read.ok) {
       await showMessage(
         read.reason === 'split'
-          ? { icon: '🧩', title: 'البلوكات مش متركّبة', text: 'ركّب كل البلوكات تحت بعض في حتة واحدة' }
-          : { icon: '🧩', title: 'مفيش بلوكات', text: 'اسحب بلوك من القايمة وحطه في المساحة البيضا' },
+          ? { icon: '🧩', title: T.splitTitle, text: T.splitText }
+          : { icon: '🧩', title: T.emptyTitle, text: T.emptyText },
       );
       return;
     }
@@ -167,7 +171,7 @@ function startGame(level) {
   });
 
   $('#hint-btn').addEventListener('click', () =>
-    showMessage({ icon: '💡', title: 'تلميح', text: level.hint }),
+    showMessage({ icon: '💡', title: T.hint, text: pick(level.hint) }),
   );
 
   const speed = $('#speed');
@@ -181,14 +185,16 @@ function startGame(level) {
   window.addEventListener('resize', () => Blockly.svgResize(ws));
 }
 
-/** Move the program so it sits in view, just beside the toolbox (RTL: the toolbox is on the right). */
+/** Move the program so it sits in view, just beside the toolbox (right side in Arabic, left in English). */
 function placeNextToToolbox(ws) {
   const top = ws.getTopBlocks(true)[0];
   if (!top) return;
   const area = $('#blockly').getBoundingClientRect();
   const box = top.getSvgRoot().getBoundingClientRect();
-  const targetRight = area.right - ws.getFlyout().getWidth() - 24;
-  const dx = (targetRight - box.right) / ws.scale;
+  const flyout = ws.getFlyout().getWidth();
+  const dx = isRtl()
+    ? (area.right - flyout - 24 - box.right) / ws.scale
+    : (area.left + flyout + 24 - box.left) / ws.scale;
   const dy = (area.top + 24 - box.top) / ws.scale;
   ws.getTopBlocks(true).forEach((b) => b.moveBy(dx, dy));
 }
@@ -199,30 +205,33 @@ async function showResult(level, result, view) {
     markSolved(level.id);
     renderLevelBar(level);
     const next = getLevel(level.id + 1);
-    const buttons = [{ label: 'تمام', value: 'stay' }];
+    const buttons = [{ label: T.ok, value: 'stay' }];
     if (next && isUnlocked(ACTIVITY, next.id)) {
-      buttons.unshift({ label: `المستوى ${next.id} ⬅`, value: 'next', kind: 'primary' });
+      buttons.unshift({ label: T.nextBtn(next.id), value: 'next', kind: 'primary' });
     }
     const choice = await showMessage({
       icon: '🎉',
-      title: 'برافو! الباندا وصل',
-      text: next && !isUnlocked(ACTIVITY, next.id) ? `المستوى ${next.id} هيتفتح بكود من المدرس` : '',
+      title: T.winTitle,
+      text: next && !isUnlocked(ACTIVITY, next.id) ? T.nextLocked(next.id) : '',
       buttons,
     });
     if (choice === 'next') location.href = levelUrl(next.id);
     return;
   }
-  const detective = '🔍 شغّلناه ← 👀 حصل إيه؟ ← 🎯 كنا عايزين إيه؟';
   const msg = {
-    [RESULT.CRASH]: { icon: '💥', title: 'الباندا خبط في الحيطة!' },
-    [RESULT.UNFINISHED]: { icon: '🤔', title: 'البرنامج خلص والباندا لسه ماوصلش' },
-    [RESULT.TIMEOUT]: { icon: '🌀', title: 'الباندا فضل يلف ومش واصل' },
+    [RESULT.CRASH]: { icon: '💥', title: T.crash },
+    [RESULT.UNFINISHED]: { icon: '🤔', title: T.unfinished },
+    [RESULT.TIMEOUT]: { icon: '🌀', title: T.timeout },
   }[result];
-  await showMessage({ ...msg, text: detective, buttons: [{ label: 'هصلّحه', value: true, kind: 'primary' }] });
+  await showMessage({ ...msg, text: T.detective, buttons: [{ label: T.fix, value: true, kind: 'primary' }] });
   view.reset();
 }
 
 function init() {
+  applyStrings(STRINGS);
+  wireLangButton($('#lang-btn'));
+  $('#speed').setAttribute('aria-label', T.speed);
+  $('#level-bar').setAttribute('aria-label', T.levels);
   const level = pickLevel();
   if (getLevel(requested) === null || requested !== level.id) {
     history.replaceState(null, '', levelUrl(level.id));

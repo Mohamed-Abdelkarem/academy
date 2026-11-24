@@ -28,11 +28,11 @@ export function remove(key) {
   }
 }
 
-/** Remove everything this site stored on this device. */
+/** Remove everything this site stored on this device (except the language choice). */
 export function clearAll() {
   try {
     Object.keys(localStorage)
-      .filter((k) => k.startsWith(PREFIX))
+      .filter((k) => k.startsWith(PREFIX) && k !== PREFIX + 'lang')
       .forEach((k) => localStorage.removeItem(k));
   } catch {
     /* ignore */

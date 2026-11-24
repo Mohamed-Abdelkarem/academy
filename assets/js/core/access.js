@@ -29,7 +29,7 @@ export function isTeacher() {
 
 /**
  * Try a code. On success the grants are saved on this device.
- * @returns {Promise<null | { label: string, all: boolean, grants: object }>}
+ * @returns {Promise<null | { label: {ar:string,en:string}, all: boolean, grants: object }>}
  */
 export async function redeem(rawCode) {
   const code = normalizeCode(rawCode);

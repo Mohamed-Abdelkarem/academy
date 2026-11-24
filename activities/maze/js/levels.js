@@ -30,8 +30,7 @@ export const LEVELS = [
     ],
     maxBlocks: Infinity,
     toolbox: BASIC,
-    startLocked: true, // the starting "move" block can't be moved or deleted
-    hint: 'ركّب البلوكات تحت بعض عشان الباندا يوصل للعلم 🏁',
+    hint: { ar: 'ركّب البلوكات تحت بعض عشان الباندا يوصل للعلم 🏁', en: 'Stack the blocks so the panda reaches the flag 🏁' },
   },
   {
     id: 2,
@@ -47,7 +46,7 @@ export const LEVELS = [
     ],
     maxBlocks: Infinity,
     toolbox: BASIC,
-    hint: 'الباندا محتاج يلف. فكّر: يلف شمال ولا يمين؟',
+    hint: { ar: 'الباندا محتاج يلف. فكّر: يلف شمال ولا يمين؟', en: 'The panda needs to turn. Left or right?' },
   },
   {
     id: 3,
@@ -63,7 +62,7 @@ export const LEVELS = [
     ],
     maxBlocks: 2,
     toolbox: [...BASIC, REPEAT],
-    hint: 'عندك 2 بلوك بس! جرّب بلوك كرِّر حتى',
+    hint: { ar: 'عندك 2 بلوك بس! جرّب بلوك كرِّر حتى', en: 'Only 2 blocks! Try the repeat until block' },
   },
   {
     id: 4,
@@ -80,7 +79,7 @@ export const LEVELS = [
     ],
     maxBlocks: 5,
     toolbox: [...BASIC, REPEAT],
-    hint: 'تقدر تحط أكتر من بلوك جوه كرِّر حتى',
+    hint: { ar: 'تقدر تحط أكتر من بلوك جوه كرِّر حتى', en: 'You can put more than one block inside repeat until' },
   },
   {
     id: 5,
@@ -96,7 +95,7 @@ export const LEVELS = [
     ],
     maxBlocks: 5,
     toolbox: [...BASIC, REPEAT],
-    hint: 'مش لازم كل البلوكات تبقى جوه التكرار',
+    hint: { ar: 'مش لازم كل البلوكات تبقى جوه التكرار', en: 'Not every block has to go inside the loop' },
   },
   {
     id: 6,
@@ -112,7 +111,7 @@ export const LEVELS = [
     ],
     maxBlocks: 5,
     toolbox: [...BASIC, REPEAT, IF_LEFT],
-    hint: 'بلوك إذا بيسأل سؤال: لو فيه طريق شمال… يلف شمال',
+    hint: { ar: 'بلوك إذا بيسأل سؤال: لو فيه طريق شمال… يلف شمال', en: 'The if block asks a question: if there\'s a path to the left… turn left' },
   },
   {
     id: 7,
@@ -128,7 +127,7 @@ export const LEVELS = [
     ],
     maxBlocks: 5,
     toolbox: [...BASIC, REPEAT, IF],
-    hint: 'اضغط على السهم الصغير جوه بلوك إذا وغيّر الاتجاه',
+    hint: { ar: 'اضغط على السهم الصغير جوه بلوك إذا وغيّر الاتجاه', en: 'Click the small arrow inside the if block and change the direction' },
   },
   {
     id: 8,
@@ -144,7 +143,7 @@ export const LEVELS = [
     ],
     maxBlocks: 10,
     toolbox: [...BASIC, REPEAT, IF],
-    hint: 'الطريق بيلف ناحية واحدة ولا ناحيتين؟',
+    hint: { ar: 'الطريق بيلف ناحية واحدة ولا ناحيتين؟', en: 'Does the path turn one way or both ways?' },
   },
   {
     id: 9,
@@ -160,7 +159,7 @@ export const LEVELS = [
     ],
     maxBlocks: 7,
     toolbox: [...BASIC, REPEAT, IF, IF_ELSE],
-    hint: 'إذا-وإلا: لو قدامك طريق اعمل حاجة… وإلا اعمل حاجة تانية',
+    hint: { ar: 'إذا-وإلا: لو قدامك طريق اعمل حاجة… وإلا اعمل حاجة تانية', en: 'if-else: if there\'s a path ahead do one thing… else do another' },
   },
   {
     id: 10,
@@ -176,7 +175,7 @@ export const LEVELS = [
     ],
     maxBlocks: 10,
     toolbox: [...BASIC, REPEAT, IF, IF_ELSE],
-    hint: 'للأبطال: امشي وإيدك على الحيطة اللي على شمالك',
+    hint: { ar: 'للأبطال: امشي وإيدك على الحيطة اللي على شمالك', en: 'For heroes: walk with your hand on the left wall' },
   },
 ];
 
