@@ -1,11 +1,11 @@
 // Page text in Arabic and English.
 export const STRINGS = {
   ar: {
-    groupArrows: '🧩 الأسهم · حصة 1', groupCode: '✍️ الكود · حصة 2',
+    groupArrows: '🧩 الأسهم', groupCode: '✍️ الكود',
     writeIt: '✍️ اكتبه بإيدك', yourCode: 'الكود بتاعك', typeHere: 'اكتب هنا… أو دوس على الأوامر',
     words: 'الأوامر: fd = اتقدّم · bk = ارجع · rt = يمين · lt = شمال · repeat N [ ] = كرر · pu/pd = ارفع/نزّل القلم · cs = امسح',
     stop: '⏹ وقّف', startOver: '↺ من الأول', clearCode: '🗑 امسح',
-    idleWrite: 'اكتب الكود ودوس ▶ شغّل', idleCode: 'دوس ▶ شغّل وشوف سُلحفى هيرسم إيه 👀', emptyCode: 'اكتب أوامر الأول ✍️',
+    idleWrite: 'اكتب الكود ودوس ▶ شغّل', idleCode: 'دوس ▶ شغّل وشوف سُلحفى هيرسم إيه 👀', emptyCode: 'اكتب أوامر الأول ✍️', wallCode: 'أوبس! سُلحفى وصل لحرف اللوحة 💥 الرقم كبير شوية… جرّب رقم أصغر',
     wrongCode: 'سُلحفى رسم حاجة تانية… قارن رسمتك بالشكل الباهت وجرّب تاني 🔍',
     winStar: 'برافو! النجمة طلعت ⭐ جرّب دلوقتي تغيّر 144 وشوف هيحصل إيه',
     err: {
@@ -29,14 +29,14 @@ export const STRINGS = {
     idle: 'رتّب الأوامر ودوس ▶ شغّل', idleBug: 'شغّل البرنامج الأول… سُلحفى هيرسم إيه؟',
     running: 'سُلحفى بينفّذ الأوامر… خطوة خطوة', win: 'برافو! برنامجك صح 🎉',
     wrong: 'قرّبت! راجع ترتيب الأوامر وجرّب تاني', wall: 'أوبس! سُلحفى خبط في الحيطة 💥', done: 'جامد! جرّب أوامر جديدة ✨',
-    logoNote: 'نفس البرنامج بلغة Logo — تقدر تكتبه في Logo Interpreter',
+    logoNote: 'نفس البرنامج بلغة Logo',
   },
   en: {
-    groupArrows: '🧩 Arrows · Class 1', groupCode: '✍️ Code · Class 2',
+    groupArrows: '🧩 Arrows', groupCode: '✍️ Code',
     writeIt: '✍️ Write it yourself', yourCode: 'Your code', typeHere: 'Type here… or tap the commands',
     words: 'Commands: fd = forward · bk = back · rt = right · lt = left · repeat N [ ] · pu/pd = pen up/down · cs = clear',
     stop: '⏹ Stop', startOver: '↺ Start over', clearCode: '🗑 Clear',
-    idleWrite: 'Type your code and press ▶ Run', idleCode: 'Press ▶ Run and see what Sulhafa draws 👀', emptyCode: 'Type some commands first ✍️',
+    idleWrite: 'Type your code and press ▶ Run', idleCode: 'Press ▶ Run and see what Sulhafa draws 👀', emptyCode: 'Type some commands first ✍️', wallCode: 'Oops! Sulhafa reached the edge 💥 Try a smaller number',
     wrongCode: 'Sulhafa drew something else. Compare with the faint shape and try again 🔍',
     winStar: 'Great! There is your star ⭐ Now change 144 and see what happens',
     err: {
@@ -60,6 +60,6 @@ export const STRINGS = {
     idle: 'Build your program, then press ▶ Run', idleBug: 'Run it first. What does Sulhafa draw?',
     running: 'Sulhafa follows the commands… step by step', win: 'You did it! 🎉',
     wrong: 'Almost! Check the order and try again', wall: 'Oops! Sulhafa hit the wall 💥', done: 'Nice! Try new commands ✨',
-    logoNote: 'The same program in Logo — you can type it in Logo Interpreter',
+    logoNote: 'The same program in Logo',
   },
 };

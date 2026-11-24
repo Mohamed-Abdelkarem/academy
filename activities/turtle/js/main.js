@@ -1,6 +1,6 @@
 // Turtle activity: one page, two playgrounds that share the same turtle.
-//   🧩 arrows (Session 1): forward / left / right buttons on a dot grid.
-//   ✍️ code (Session 2): type Logo (fd, rt, lt, repeat…) on an open board.
+//   🧩 arrows: forward / left / right buttons on a dot grid.
+//   ✍️ code: type Logo (fd, rt, lt, repeat…) on an open board.
 // The arrows mode can hand its program to the code mode ("✍️ write it yourself").
 import { ALL_LEVELS, findLevel } from './levels.js';
 import { STRINGS } from './strings.js';

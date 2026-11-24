@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { run, parse, drawing, sameDrawing, LogoError, fromArrows } from '../activities/turtle/js/logo.js';
+import { run, parse, drawing, sameDrawing, LogoError, fromArrows, boardFor, fence } from '../activities/turtle/js/logo.js';
 import { CODE_LEVELS } from '../activities/turtle/js/levels.js';
 
 const lines = (src) => drawing(run(src).steps);
@@ -38,4 +38,20 @@ test('every code level: its solution matches its target, its starter does not (u
       assert.ok(!sameDrawing(lines(lv.starter), lines(lv.target)), lv.id + ' starter should not already win');
     }
   }
+});
+
+test('every code level fits its board: target, solution and starter never hit the edge', () => {
+  for (const l of CODE_LEVELS) {
+    const srcs = [l.target, l.solution, l.starter].filter((t) => t && !t.includes('___'));
+    const b = boardFor(srcs.map((t) => drawing(run(t).steps)));
+    for (const t of srcs) assert.equal(fence(run(t).steps, b).wall, false, `${l.id}: ${t}`);
+  }
+});
+
+test('the turtle stops at the edge of the board', () => {
+  const { steps, wall } = fence(run('fd 1000\nrt 90\nfd 50').steps, { cx: 0, cy: 0, half: 300 });
+  assert.equal(wall, true);
+  assert.equal(steps.length, 1);
+  assert.deepEqual([steps[0].x, steps[0].y], [0, 300]);
+  assert.deepEqual(steps[0].draw, [0, 0, 0, 300]);
 });

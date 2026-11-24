@@ -1,4 +1,4 @@
-// Turtle on a dot grid (Course 1, Session 1). Pure logic, no DOM, so it can be tested in Node.
+// Turtle on a dot grid. Pure logic, no DOM, so it can be tested in Node.
 // Grid points 0..N on both axes. Directions: 0 up, 1 right, 2 down, 3 left (screen coordinates).
 export const N = 6;
 const DIRS = [[0, -1], [1, 0], [0, 1], [-1, 0]];

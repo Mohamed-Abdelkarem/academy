@@ -1,14 +1,14 @@
-// ✍️ Code mode (Session 2): the kid types Logo; sulhafa draws it on an open board.
-import { run, drawing, sameDrawing, LogoError } from './logo.js';
+// ✍️ Code mode: the kid types Logo; sulhafa draws it on a board that fits the level.
+import { run, drawing, sameDrawing, boardFor, fence, LogoError } from './logo.js';
 import { pick } from '../../../assets/js/core/i18n.js';
 import { load, save, remove } from '../../../assets/js/core/storage.js';
 
 const $ = (s) => document.querySelector(s);
 const SVGNS = 'http://www.w3.org/2000/svg';
-const W = 300; // board shows -300..300 Logo steps each way (like a big sheet of paper)
-const SPEEDS = { slow: 320, normal: 140, fast: 45 }; // ms per command
-const CALM = 12; // first commands always at the chosen speed; long programs then speed up
-const MAX_MS = 14000; // ...so a whole drawing takes at most ~14 s
+const SPEEDS = { slow: 850, normal: 550, fast: 300 }; // ms for "fd 100" or "rt 90": same as the arrows mode
+const CALM = 8; // first commands always at the chosen speed; long programs then speed up…
+const MAX_MS = 25000; // …so a whole drawing at "normal" takes at most ~25 s
+const REF = 632; // the arrows board size: lines and turtle look the same size in both modes
 const CHIPS = ['fd 100', 'rt 90', 'lt 90', 'repeat 4 [ ]', 'cs'];
 
 const HTML = `
@@ -73,13 +73,28 @@ export function init(level, T, solved, onSolved) {
     if (parent) parent.appendChild(n);
     return n;
   };
-  const svg = el('svg', { viewBox: `${-W} ${-W} ${2 * W} ${2 * W}`, class: 'board-svg', role: 'img', 'aria-label': T.title });
-  el('rect', { x: -W + 3, y: -W + 3, width: 2 * W - 6, height: 2 * W - 6, rx: 34, class: 'board-bg' }, svg);
-  for (let x = -200; x <= 200; x += 100) for (let y = -200; y <= 200; y += 100) el('circle', { cx: x, cy: y, r: x || y ? 5 : 8, class: 'board-dot' }, svg);
+  // the board fits the level's shape; on "write" it is the big sheet (bigger if the arrows sent a long program)
+  const tryDraw = (t) => { try { return drawing(run(t).steps); } catch { return []; } };
+  let B;
+  if (level.target || level.starter) {
+    B = boardFor([level.target, level.solution, level.starter].filter(Boolean).map(tryDraw));
+  } else {
+    const far = Math.max(0, ...tryDraw(text).flat().map(Math.abs));
+    B = { cx: 0, cy: 0, half: Math.max(300, Math.ceil((far + 40) / 50) * 50) };
+  }
+  const S = 2 * B.half, k = S / REF;
+  const svg = el('svg', { viewBox: `${B.cx - B.half} ${-B.cy - B.half} ${S} ${S}`, class: 'board-svg', role: 'img', 'aria-label': T.title });
+  el('rect', { x: B.cx - B.half + 2 * k, y: -B.cy - B.half + 2 * k, width: S - 4 * k, height: S - 4 * k, rx: 36 * k, class: 'board-bg', style: `stroke-width:${4 * k}px` }, svg);
+  const gap = S >= 400 ? 100 : 50; // a dot every 100 steps (every 50 on a zoomed board)
+  for (let x = Math.ceil((B.cx - B.half + gap * 0.3) / gap) * gap; x < B.cx + B.half - gap * 0.3; x += gap) {
+    for (let y = Math.ceil((B.cy - B.half + gap * 0.3) / gap) * gap; y < B.cy + B.half - gap * 0.3; y += gap) {
+      el('circle', { cx: x, cy: -y, r: (x || y ? 6 : 9) * k, class: 'board-dot' }, svg);
+    }
+  }
   const ghost = el('g', { class: 'ghost' }, svg);
   const layer = el('g', {}, svg);
   const turtle = el('g', { class: 'turtle' }, svg);
-  const body = el('g', { transform: 'scale(0.75)' }, turtle);
+  const body = el('g', { transform: `scale(${k})` }, turtle);
   [[-20, -18], [20, -18], [-20, 18], [20, 18]].forEach(([x, y]) => el('circle', { cx: x, cy: y, r: 10, class: 't-leg' }, body));
   el('circle', { cx: 0, cy: -30, r: 13, class: 't-head' }, body);
   el('circle', { cx: -5, cy: -34, r: 3, class: 't-eye' }, body);
@@ -90,15 +105,27 @@ export function init(level, T, solved, onSolved) {
 
   // the target, faint, so the kid sees what to draw (not for "run and see" levels)
   if (level.target && !level.runOnly) {
-    for (const [x1, y1, x2, y2] of drawing(run(level.target).steps)) {
-      el('line', { x1, y1: -y1, x2, y2: -y2, class: 'ghost-line' }, ghost);
+    const lines = drawing(run(level.target).steps);
+    const w = (lines.length > 40 ? 7 : 26) * k; // a busy shape (the flower) gets a thin outline, not a blob
+    for (const [x1, y1, x2, y2] of lines) {
+      el('line', { x1, y1: -y1, x2, y2: -y2, class: 'ghost-line', style: `stroke-width:${w}px` }, ghost);
     }
   }
+  const ease = (ms) => (ms >= 200 ? 'ease-in-out' : 'linear');
   const place = (x, y, h, ms) => {
-    turtle.style.transition = ms ? `transform ${ms}ms linear` : 'none';
+    turtle.style.transition = ms ? `transform ${ms}ms ${ease(ms)}` : 'none';
     turtle.style.transform = `translate(${x}px, ${-y}px) rotate(${h}deg)`;
   };
-  const line = ([x1, y1, x2, y2]) => el('line', { x1, y1: -y1, x2, y2: -y2, class: 'code-line-draw' }, layer);
+  // the line grows behind sulhafa while he walks
+  const line = ([x1, y1, x2, y2], ms) => {
+    const n = el('line', { x1, y1: -y1, x2, y2: -y2, class: 'board-line', style: `stroke-width:${12 * k}px`, pathLength: 1 }, layer);
+    if (!ms) return;
+    n.style.strokeDasharray = '1 1';
+    n.style.strokeDashoffset = '1';
+    n.getBoundingClientRect();
+    n.style.transition = `stroke-dashoffset ${ms}ms ${ease(ms)}`;
+    n.style.strokeDashoffset = '0';
+  };
 
   // ------------------------------------------------------------- editor
   const gutter = $('#gutter');
@@ -174,9 +201,9 @@ export function init(level, T, solved, onSolved) {
   }
   function play() {
     resetBoard();
-    let steps;
+    let steps, wall;
     try {
-      steps = run(ta.value).steps;
+      ({ steps, wall } = fence(run(ta.value).steps, B));
     } catch (e) {
       if (!(e instanceof LogoError)) throw e;
       renderGutter(0, e.line);
@@ -187,16 +214,14 @@ export function init(level, T, solved, onSolved) {
     $('#run-btn').hidden = true;
     $('#stop-btn').hidden = false;
     setStatus('running');
-    const base = SPEEDS[speed];
-    const rest = Math.max(0, steps.length - CALM);
-    const fastMs = rest ? Math.min(base, Math.max(8, (MAX_MS - CALM * base) / rest)) : base;
+    const times = stepTimes(steps, SPEEDS[speed]);
     let i = 0;
     const tick = () => {
-      if (i >= steps.length) return finish(steps);
+      if (i >= steps.length) return finish(steps, wall);
       const s = steps[i];
-      const ms = i < CALM ? base : fastMs;
+      const ms = times[i];
       if (s.clear) layer.innerHTML = '';
-      if (s.draw) line(s.draw);
+      if (s.draw) line(s.draw, Math.round(ms * 0.85));
       place(s.x, s.y, s.h, Math.round(ms * 0.85));
       renderGutter(s.line);
       i++;
@@ -204,9 +229,32 @@ export function init(level, T, solved, onSolved) {
     };
     timer = setTimeout(tick, 200);
   }
-  function finish(steps) {
+  // how long each step takes: "fd 100" or "rt 90" = one arrows step; long programs speed up after CALM
+  function stepTimes(steps, base) {
+    let px = 0, py = 0, ph = 0;
+    const raw = steps.map((s) => {
+      const d = Math.hypot(s.x - px, s.y - py), t = Math.abs(s.h - ph);
+      px = s.x; py = s.y; ph = s.h;
+      if (s.clear) return base * 0.5;
+      if (d > 0.01) return base * Math.min(1.5, Math.max(0.35, d / 100));
+      return base * Math.min(1, Math.max(0.35, t / 90));
+    });
+    const cap = MAX_MS * (base / SPEEDS.normal);
+    const calm = raw.slice(0, CALM).reduce((a, b) => a + b, 0);
+    const rest = raw.slice(CALM).reduce((a, b) => a + b, 0);
+    if (calm + rest <= cap || !rest) return raw;
+    const f = Math.max(0, cap - calm) / rest;
+    return raw.map((ms, i) => (i < CALM ? ms : Math.max(12, ms * f)));
+  }
+  function finish(steps, wall) {
     stop();
     renderGutter();
+    if (wall) {
+      turtle.classList.add('bump');
+      setTimeout(() => turtle.classList.remove('bump'), 700);
+      renderGutter(0, steps[steps.length - 1].line);
+      return setStatus('wall', T.wallCode);
+    }
     if (!level.target || level.runOnly) return setStatus('done');
     if (sameDrawing(drawing(steps), drawing(run(level.target).steps))) {
       onSolved(level.id);

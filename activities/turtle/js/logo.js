@@ -1,4 +1,4 @@
-// Small Logo for kids (Course 1, Session 2). Pure logic, no DOM: parse → run → list of drawn lines.
+// Small Logo for kids. Pure logic, no DOM: parse → run → list of drawn lines.
 // Words: fd/forward, bk/back, rt/right, lt/left, repeat N [ ... ], pu/penup, pd/pendown, home, cs/clearscreen.
 // Turtle starts at (0, 0) facing up; y grows upward (like Logo Interpreter). 1 unit = 1 Logo step.
 
@@ -167,3 +167,51 @@ export function sameDrawing(a, b) {
 
 /** Arrow program (S1 commands) → Logo text, one command per line. */
 export const fromArrows = (prog) => prog.map((c) => ({ F: 'fd 100', L: 'lt 90', R: 'rt 90' })[c]).join('\n');
+
+/**
+ * Board box for a level: { cx, cy, half } in Logo units (y up). Fits the drawings given
+ * (target, starter…) plus their left/right mirror (rt ↔ lt is the usual mistake), with room around.
+ * No drawings → the default sheet -300..300.
+ */
+export function boardFor(drawings, min = 120) {
+  let x0 = 0, x1 = 0, y0 = 0, y1 = 0; // the start point is always on the board
+  for (const lines of drawings) {
+    for (const [ax, ay, bx, by] of lines) {
+      for (const [x, y] of [[ax, ay], [bx, by], [-ax, ay], [-bx, by]]) {
+        x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+      }
+    }
+  }
+  if (x0 === x1 && y0 === y1) return { cx: 0, cy: 0, half: 300 };
+  const dim = Math.max(x1 - x0, y1 - y0);
+  const half = Math.max(min, Math.ceil((dim / 2 + Math.max(30, 0.15 * dim)) / 10) * 10);
+  return { cx: Math.round((x0 + x1) / 2), cy: Math.round((y0 + y1) / 2), half };
+}
+
+/**
+ * Stop the turtle at the edge of the board (like the walls in the arrows mode).
+ * Returns { steps, wall }: the steps up to the edge, the last one cut at the edge.
+ */
+export function fence(steps, { cx, cy, half }) {
+  const lo = [cx - half, cy - half], hi = [cx + half, cy + half];
+  const inside = (x, y) => x >= lo[0] - 0.01 && x <= hi[0] + 0.01 && y >= lo[1] - 0.01 && y <= hi[1] + 0.01;
+  const out = [];
+  let px = 0, py = 0;
+  for (const s of steps) {
+    if (inside(s.x, s.y)) { out.push(s); px = s.x; py = s.y; continue; }
+    // walk from (px, py) toward (s.x, s.y) and stop where it leaves the box
+    let t = 1;
+    const dx = s.x - px, dy = s.y - py;
+    if (dx > 0) t = Math.min(t, (hi[0] - px) / dx);
+    if (dx < 0) t = Math.min(t, (lo[0] - px) / dx);
+    if (dy > 0) t = Math.min(t, (hi[1] - py) / dy);
+    if (dy < 0) t = Math.min(t, (lo[1] - py) / dy);
+    const rr = (v) => Math.round(v * 1000) / 1000;
+    const x = rr(px + dx * Math.max(0, t)), y = rr(py + dy * Math.max(0, t));
+    const cut = { ...s, x, y, wall: true };
+    if (s.draw) cut.draw = [px, py, x, y];
+    out.push(cut);
+    return { steps: out, wall: true };
+  }
+  return { steps: out, wall: false };
+}

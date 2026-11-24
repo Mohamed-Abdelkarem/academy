@@ -1,4 +1,4 @@
-// 🧩 Arrows mode (Session 1): grid challenges with forward / left / right buttons.
+// 🧩 Arrows mode: grid challenges with forward / left / right buttons.
 import { N, NEXT, run } from './engine.js';
 import { fromArrows } from './logo.js';
 import { pick, getLang } from '../../../assets/js/core/i18n.js';
@@ -90,9 +90,18 @@ function placeTurtle(x, y, rot, animate) {
   turtle.style.transition = animate ? `transform ${Math.round(SPEEDS[speed] * 0.8)}ms ease-in-out` : 'none';
   turtle.style.transform = `translate(${px(x)}px, ${px(y)}px) rotate(${rot}deg)`;
 }
-function drawSegs(segs, cls = 'board-line') {
+// grow = ms: the newest line grows behind sulhafa while he walks
+function drawSegs(segs, grow = 0) {
   drawLayer.innerHTML = '';
-  segs.forEach(([x1, y1, x2, y2]) => el('line', { x1: px(x1), y1: px(y1), x2: px(x2), y2: px(y2), class: cls }, drawLayer));
+  segs.forEach(([x1, y1, x2, y2], i) => {
+    const n = el('line', { x1: px(x1), y1: px(y1), x2: px(x2), y2: px(y2), class: 'board-line', pathLength: 1 }, drawLayer);
+    if (!grow || i !== segs.length - 1) return;
+    n.style.strokeDasharray = '1 1';
+    n.style.strokeDashoffset = '1';
+    n.getBoundingClientRect();
+    n.style.transition = `stroke-dashoffset ${grow}ms ease-in-out`;
+    n.style.strokeDashoffset = '0';
+  });
 }
 const start = () => ({ x: level.start[0], y: level.start[1], d: level.start[2] });
 
@@ -156,7 +165,7 @@ function play() {
   renderProgram();
   const { steps, result } = run(program, s, level.target);
   setStatus('running');
-  let k = 0;
+  let k = 0, drawn = 0;
   const tick = () => {
     if (k >= steps.length) {
       activeStep = -1;
@@ -167,7 +176,8 @@ function play() {
     }
     const st = steps[k];
     activeStep = st.i;
-    drawSegs(st.segs);
+    drawSegs(st.segs, st.segs.length > drawn && !st.wall ? Math.round(SPEEDS[speed] * 0.8) : 0);
+    drawn = st.segs.length;
     if (st.wall) {
       turtle.classList.add('bump');
       setTimeout(() => turtle.classList.remove('bump'), 700);
