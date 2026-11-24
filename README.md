@@ -7,7 +7,7 @@ Live site: https://mohamed-abdelkarem.github.io/academy/
 | Path | What it is |
 |---|---|
 | `index.html` | Hub page: list of activities |
-| `activities/turtle/` | Turtle on a dot grid: arrow commands, 3 challenges + free play, Logo view (Course 1, Session 1). Open, no code |
+| `activities/turtle/` | Turtle, two playgrounds sharing one turtle (Course 1, Sessions 1–2, open, no code): 🧩 arrows on a dot grid (`grid.js` + `engine.js`) and ✍️ typed Logo (`code.js` + `logo.js`: fd/bk/rt/lt/repeat/pu/pd/home/cs, Arabic error messages, drawing check). "✍️ Write it yourself" hands the arrow program to the code editor. Levels in `levels.js` |
 | `activities/maze/` | Panda maze with Blockly blocks (Course 1, Sessions 3–4) |
 | `assets/css/base.css` | Shared look (colors, fonts, buttons, dialogs) |
 | `assets/js/core/` | Shared code: `storage.js` (localStorage), `access.js` (session codes), `ui.js` (dialogs), `i18n.js` (Arabic/English), `code-format.js` |
