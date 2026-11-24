@@ -1,0 +1,73 @@
+.level-bar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 12px; }
+.level-dot {
+  width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--card); font-size: 1.5rem; text-decoration: none; box-shadow: var(--shadow); border: 3px solid transparent;
+}
+.level-dot.solved { background: var(--mint); border-color: var(--green); }
+.level-dot.current { border-color: var(--orange); }
+
+.game { display: grid; grid-template-columns: minmax(300px, 560px) minmax(320px, 1fr); gap: 20px; padding: 0 16px 20px; max-width: 1200px; margin: 0 auto; }
+@media (max-width: 860px) { .game { grid-template-columns: 1fr; } }
+.stage, .panel { display: flex; flex-direction: column; gap: 12px; }
+.stage-head h2 { margin: 0; }
+.stage-head p { margin: 4px 0 0; }
+
+.board { width: 100%; aspect-ratio: 1; }
+.board-svg { width: 100%; height: 100%; display: block; }
+.board-bg { fill: #fff; stroke: var(--dark); stroke-width: 4; }
+.board-dot { fill: #cfc6b4; }
+.board-road { fill: none; stroke: #f6d9b4; stroke-width: 34; stroke-linecap: round; stroke-linejoin: round; }
+.board-goal { fill: #fff; stroke: var(--orange); stroke-width: 7; }
+.board-line { stroke: var(--green); stroke-width: 14; stroke-linecap: round; }
+.turtle { transform-box: view-box; }
+.t-leg { fill: #3f8f5e; }
+.t-head { fill: #7cc58f; stroke: #2f6b45; stroke-width: 3; }
+.t-eye { fill: var(--dark); }
+.t-shell { fill: #7cc58f; stroke: #2f6b45; stroke-width: 5; }
+.t-spot { fill: #c9e8cf; }
+.turtle.bump > g { animation: bump 0.35s 2; }
+@keyframes bump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.status { border-radius: var(--radius); padding: 12px 16px; font-weight: 700; font-size: 1.15rem; text-align: center; background: #ece5d6; }
+.status.running { background: #dfe8fb; }
+.status.win, .status.done { background: #d9efe0; color: var(--green); }
+.status.wrong { background: #fde9cf; color: var(--orange-dark); }
+.status.wall { background: #fbdcdc; color: var(--red); }
+
+.speed-row { display: flex; align-items: center; gap: 8px; font-weight: 700; flex-wrap: wrap; }
+.speed-btn { padding: 6px 16px; }
+.speed-btn.on { background: var(--dark); color: #fff; }
+
+.cmd-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.cmd {
+  display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 10px; border: none; border-radius: 20px;
+  font-family: var(--font-title); color: var(--dark); cursor: pointer; box-shadow: 0 6px 0 var(--dark); transition: transform 0.08s, box-shadow 0.08s;
+}
+.cmd:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--dark); }
+.cmd-F { background: #9fd9ad; } .cmd-L { background: #a9c6f0; } .cmd-R { background: #f6c58e; }
+.cmd-g { font-size: 2.4rem; line-height: 1; font-weight: 800; }
+.cmd-t { display: flex; flex-direction: column; line-height: 1.1; }
+.cmd-ar { font-size: 1.5rem; font-weight: 800; }
+.cmd-en { font-size: 1rem; font-weight: 600; }
+
+.program { display: flex; flex-direction: column; gap: 10px; min-height: 220px; }
+.program-head { display: flex; align-items: center; gap: 12px; }
+.program-head .btn { margin-inline-start: auto; }
+.btn.small { padding: 4px 14px; font-size: 0.95rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; }
+.chip {
+  display: flex; align-items: center; gap: 8px; padding: 6px 16px 6px 8px; border: 3px solid transparent; border-radius: 999px;
+  font-family: var(--font); font-size: 1.15rem; font-weight: 700; color: var(--dark); cursor: pointer;
+}
+.chip-F { background: #d9f0df; } .chip-L { background: #dde8f8; } .chip-R { background: #fbe6cf; }
+.chip.active { border-color: var(--dark); }
+.chip-n { width: 30px; height: 30px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1rem; }
+.chip-g { font-size: 1.4rem; font-weight: 800; }
+.code-view { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 1.1rem; text-align: left; white-space: pre; columns: 2; column-gap: 24px; }
+.code-line { border-radius: 6px; padding: 0 6px; break-inside: avoid; }
+.code-line.active { background: #d9f0df; }
+.code-note { font-family: var(--font); white-space: normal; column-span: all; font-size: 0.9rem; }
+.controls { display: flex; gap: 10px; flex-wrap: wrap; }
+.controls .btn { flex: 1; font-size: 1.1rem; }
+#restore-btn { flex-basis: 100%; }
+.controls .btn { white-space: nowrap; }

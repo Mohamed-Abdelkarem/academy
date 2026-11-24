@@ -7,6 +7,7 @@ Live site: https://mohamed-abdelkarem.github.io/academy/
 | Path | What it is |
 |---|---|
 | `index.html` | Hub page: list of activities |
+| `activities/turtle/` | Turtle on a dot grid: arrow commands, 3 challenges + free play, Logo view (Course 1, Session 1). Open, no code |
 | `activities/maze/` | Panda maze with Blockly blocks (Course 1, Sessions 3–4) |
 | `assets/css/base.css` | Shared look (colors, fonts, buttons, dialogs) |
 | `assets/js/core/` | Shared code: `storage.js` (localStorage), `access.js` (session codes), `ui.js` (dialogs), `i18n.js` (Arabic/English), `code-format.js` |

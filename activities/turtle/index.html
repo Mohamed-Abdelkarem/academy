@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐢</text></svg>">
+  <title>سُلحفى الرسّام 🐢</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="turtle.css">
+  <script src="../../assets/js/boot-lang.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../" data-i18n="home">🏠 الأكاديمية</a>
+    <strong class="page-title" data-i18n="title">سُلحفى الرسّام 🐢</strong>
+    <span class="header-actions">
+      <button id="lang-btn" class="btn btn-ghost" type="button">English</button>
+    </span>
+  </header>
+
+  <nav id="level-bar" class="level-bar" aria-label="التحديات"></nav>
+
+  <main class="game">
+    <section class="stage">
+      <div class="stage-head">
+        <h2 id="level-title"></h2>
+        <p id="level-task" class="muted"></p>
+      </div>
+      <div id="board" class="board"></div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <div class="speed-row">
+        <span data-i18n="speed">السرعة</span>
+        <button class="btn speed-btn" type="button" data-speed="slow" data-i18n="slow">بطيء</button>
+        <button class="btn speed-btn" type="button" data-speed="normal" data-i18n="normal">عادي</button>
+        <button class="btn speed-btn" type="button" data-speed="fast" data-i18n="fast">سريع</button>
+      </div>
+      <div class="cmd-row">
+        <button id="add-F" class="cmd cmd-F" type="button"><span class="cmd-g">↑</span><span class="cmd-t"><span class="cmd-ar">اتقدّم</span><span class="cmd-en" dir="ltr">forward</span></span></button>
+        <button id="add-L" class="cmd cmd-L" type="button"><span class="cmd-g">↺</span><span class="cmd-t"><span class="cmd-ar">شمال</span><span class="cmd-en" dir="ltr">left</span></span></button>
+        <button id="add-R" class="cmd cmd-R" type="button"><span class="cmd-g">↻</span><span class="cmd-t"><span class="cmd-ar">يمين</span><span class="cmd-en" dir="ltr">right</span></span></button>
+      </div>
+      <div class="program card">
+        <div class="program-head">
+          <strong data-i18n="program">برنامجك</strong>
+          <span id="count" class="muted"></span>
+          <button id="toggle-code" class="btn btn-ghost small" type="button">&lt;/&gt; Logo</button>
+        </div>
+        <div id="chips" class="chips"></div>
+      </div>
+      <div class="controls">
+        <button id="run-btn" class="btn btn-primary" type="button" data-i18n="run">▶ شغّل</button>
+        <button id="undo-btn" class="btn" type="button" data-i18n="undo">↩ رجوع</button>
+        <button id="clear-btn" class="btn" type="button" data-i18n="clear">🗑 امسح الكل</button>
+        <button id="restore-btn" class="btn btn-accent" type="button" data-i18n="restore" hidden>🐞 رجّع برنامج سُلحفى</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
