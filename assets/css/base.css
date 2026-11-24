@@ -1,0 +1,113 @@
+/* Shared look for every page of the academy site. Arabic first (RTL). */
+:root {
+  --cream: #fbf6ea;
+  --mint: #eaf3ec;
+  --dark: #1f2a44;
+  --green: #1e7a45;
+  --orange: #f28c28;
+  --orange-dark: #b5530a;
+  --blue: #2f6fde;
+  --red: #d64545;
+  --muted: #5b6478;
+  --card: #ffffff;
+  --radius: 16px;
+  --shadow: 0 4px 16px rgba(31, 42, 68, 0.1);
+  --font: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+  --font-title: 'Baloo Bhaijaan 2', 'Cairo', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body { margin: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--cream);
+  color: var(--dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--font-title); line-height: 1.25; margin: 0 0 0.4em; }
+
+a { color: var(--blue); }
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--dark);
+  color: #fff;
+}
+.site-header a { color: #fff; text-decoration: none; }
+.site-header .brand { font-family: var(--font-title); font-size: 1.3rem; }
+@media (max-width: 520px) {
+  .site-header { padding: 8px 12px; }
+  .site-header .page-title { display: none; }
+  .site-header .btn { padding: 6px 12px; }
+}
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--dark);
+  box-shadow: var(--shadow);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--green); color: #fff; }
+.btn-accent { background: var(--orange); color: #fff; }
+.btn-ghost { background: transparent; box-shadow: none; color: inherit; border: 2px solid currentColor; }
+.btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+/* Dialogs (code entry, results) */
+dialog.modal {
+  border: 0;
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: min(420px, 92vw);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  font-family: var(--font);
+  color: var(--dark);
+}
+dialog.modal::backdrop { background: rgba(31, 42, 68, 0.55); }
+dialog.modal .big { font-size: 3rem; line-height: 1; margin-bottom: 8px; }
+dialog.modal .actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+
+.code-input {
+  font: inherit;
+  font-size: 1.8rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  border: 3px solid var(--mint);
+  border-radius: 12px;
+  direction: ltr;
+}
+.code-input:focus { outline: none; border-color: var(--blue); }
+.form-msg { min-height: 1.6em; margin-top: 8px; font-weight: 700; }
+.form-msg.error { color: var(--red); }
+.form-msg.ok { color: var(--green); }
+
+.muted { color: var(--muted); }

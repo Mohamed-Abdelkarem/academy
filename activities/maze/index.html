@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐼</text></svg>">
+  <title>متاهة الباندا 🐼</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@400;700&display=swap">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="maze.css">
+  <script src="../../vendor/blockly/13.5.0/blockly_compressed.js"></script>
+  <script src="../../vendor/blockly/13.5.0/msg/ar.js"></script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../../">🏠 الأكاديمية</a>
+    <strong class="page-title">متاهة الباندا 🐼</strong>
+    <button id="code-btn" class="btn btn-ghost" type="button">🔑 عندي كود</button>
+  </header>
+
+  <nav id="level-bar" class="level-bar" aria-label="المستويات"></nav>
+
+  <section id="locked" class="locked-panel card" hidden>
+    <div class="big">🔒</div>
+    <h2 id="locked-title">المستوى مقفول</h2>
+    <p class="muted">المدرس هيدّيك كود الحصة عشان تفتحه</p>
+    <button id="unlock-btn" class="btn btn-primary" type="button">اكتب الكود</button>
+  </section>
+
+  <main id="game" class="game" hidden>
+    <section class="stage">
+      <div class="stage-head">
+        <h2 id="level-title">المستوى</h2>
+        <span id="capacity" class="capacity" hidden></span>
+      </div>
+      <div id="maze" class="maze"></div>
+      <div class="controls">
+        <button id="run-btn" class="btn btn-primary" type="button">▶ شغّل البرنامج</button>
+        <button id="reset-btn" class="btn" type="button">↺ من الأول</button>
+        <button id="hint-btn" class="btn" type="button">💡</button>
+      </div>
+      <label class="speed">
+        <span>🐢</span>
+        <input id="speed" type="range" min="0.5" max="2.5" step="0.5" value="1" aria-label="السرعة">
+        <span>🐇</span>
+      </label>
+    </section>
+    <section class="workspace-wrap">
+      <div id="blockly" class="blockly"></div>
+    </section>
+  </main>
+</body>
+</html>
