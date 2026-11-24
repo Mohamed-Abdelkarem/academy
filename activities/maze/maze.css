@@ -51,9 +51,11 @@
 .maze-path { fill: #f3e6c4; }
 .maze-emoji { font-size: 32px; text-anchor: middle; dominant-baseline: central; }
 .maze-arrow { fill: var(--orange); stroke: #fff; stroke-width: 2; }
-.maze-look { transition: opacity 0.15s; fill: none; stroke-width: 5; }
-.maze-look.yes { stroke: #f7c948; }
-.maze-look.no { stroke: var(--red); }
+.maze-look { transition: opacity 0.15s; pointer-events: none; }
+.maze-look-frame { fill: none; stroke: #ffd23f; stroke-width: 4; stroke-dasharray: 6 4; }
+.maze-look-dot { fill: var(--green); }
+.maze-look.no .maze-look-dot { fill: var(--red); }
+.maze-look-mark { fill: #fff; font-size: 18px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
 .maze-panda.crash .maze-panda-body { animation: shake 0.35s 2; }
 .maze-panda.win .maze-panda-body { animation: hop 0.5s 3; }
 @keyframes shake {

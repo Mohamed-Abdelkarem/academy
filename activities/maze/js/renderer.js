@@ -47,9 +47,18 @@ export class MazeView {
     flag.textContent = '🏁';
     root.append(flag);
 
-    // "Looking" marker for if-blocks: a pulse on the cell being checked.
-    this.lookMark = svg('rect', { width: SQ - 8, height: SQ - 8, rx: 10, class: 'maze-look', opacity: 0 });
-    root.append(this.lookMark);
+    // "Looking" marker for if-blocks: the cell being checked gets a dashed frame and ✓ / ✗
+    // (same marks as the S4 slides).
+    const look = svg('g', { class: 'maze-look', opacity: 0 });
+    look.append(
+      svg('rect', { x: -SQ / 2 + 4, y: -SQ / 2 + 4, width: SQ - 8, height: SQ - 8, rx: 8, class: 'maze-look-frame' }),
+      svg('circle', { r: 12, class: 'maze-look-dot' }),
+    );
+    const mark = svg('text', { class: 'maze-look-mark' });
+    look.append(mark);
+    root.append(look);
+    this.lookMark = look;
+    this.lookText = mark;
 
     // Panda = emoji + an arrow that shows where it's facing.
     const panda = svg('g', { class: 'maze-panda' });
@@ -122,11 +131,11 @@ export class MazeView {
 
   async showLook(entry) {
     const { cell, ok } = entry;
-    this.lookMark.setAttribute('x', cell.x * SQ + 4);
-    this.lookMark.setAttribute('y', cell.y * SQ + 4);
+    this.lookMark.setAttribute('transform', `translate(${cell.x * SQ + SQ / 2} ${cell.y * SQ + SQ / 2})`);
     this.lookMark.setAttribute('class', `maze-look ${ok ? 'yes' : 'no'}`);
+    this.lookText.textContent = ok ? '✓' : '✗';
     this.lookMark.setAttribute('opacity', 1);
-    await this.wait(this.stepMs() * 0.6);
+    await this.wait(this.stepMs() * 0.8);
     this.lookMark.setAttribute('opacity', 0);
   }
 

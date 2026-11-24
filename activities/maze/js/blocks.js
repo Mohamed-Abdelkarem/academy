@@ -1,15 +1,16 @@
 // Maze blocks for Blockly (global `Blockly`, loaded by a <script> tag before this module)
 // and the conversion from the workspace to an engine program.
-// Text matches Blockly Games Maze in Arabic, so the S3–S4 slides still match what kids see.
+// Text matches the S3–S4 slides: Blockly Games' Arabic wording + the English term for
+// programming concepts (repeat until · if · else), as the deck checklist requires.
 
 const MOVEMENT_HUE = 290;
 const LOOPS_HUE = 120;
 const LOGIC_HUE = 210;
 
 const PATH_OPTIONS = [
-  ['إذا هناك مسار في الأمام', 'ahead'],
-  ['إذا كان المسار إلى اليسار', 'left'],
-  ['إذا كان المسار إلى اليمين', 'right'],
+  ['إذا (if) هناك مسار في الأمام', 'ahead'],
+  ['إذا (if) كان المسار إلى اليسار', 'left'],
+  ['إذا (if) كان المسار إلى اليمين', 'right'],
 ];
 
 let defined = false;
@@ -20,7 +21,7 @@ export function defineBlocks() {
   Blockly.defineBlocksWithJsonArray([
     {
       type: 'maze_move',
-      message0: 'تحرّك إلى الأمام',
+      message0: 'تحرّك إلى الأمام ⬆️',
       previousStatement: null,
       nextStatement: null,
       colour: MOVEMENT_HUE,
@@ -46,7 +47,7 @@ export function defineBlocks() {
     },
     {
       type: 'maze_repeat_until',
-      message0: 'كرِّر حتى 🏁 %1 افعل %2',
+      message0: 'كرِّر حتى (repeat until) 🏁 %1 افعل %2',
       args0: [{ type: 'input_dummy' }, { type: 'input_statement', name: 'DO' }],
       previousStatement: null,
       colour: LOOPS_HUE,
@@ -67,7 +68,7 @@ export function defineBlocks() {
     },
     {
       type: 'maze_if_else',
-      message0: '%1 %2 افعل %3 وإلا %4',
+      message0: '%1 %2 افعل %3 وإلا (else) %4',
       args0: [
         { type: 'field_dropdown', name: 'DIR', options: PATH_OPTIONS },
         { type: 'input_dummy' },
