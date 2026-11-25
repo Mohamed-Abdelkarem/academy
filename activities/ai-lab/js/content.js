@@ -4,6 +4,7 @@ export const TOOLS = {
   draw: 'https://quickdraw.withgoogle.com/',
   tm: 'https://teachablemachine.withgoogle.com/train/image',
   tmAudio: 'https://teachablemachine.withgoogle.com/train/audio',
+  drawData: 'https://quickdraw.withgoogle.com/data',
 };
 
 export const STRINGS = {
@@ -33,7 +34,9 @@ export const MISSIONS = [
         'دوس زرار البداية — هتطلعلك كلمة، ارسمها في 20 ثانية.',
         '6 رسومات… والكمبيوتر بيقول تخميناته بصوت عالي.',
         'في الآخر: دوس على رسمتك وشوف رسومات ناس تانية لنفس الكلمة. 🤔 عرف منين؟',
+        '🖼️ عايز تشوف الكمبيوتر اتعلم من إيه؟ دوس الزرار الأخضر تحت واختار كلمة (cat = قطة) — آلاف الرسومات، كل واحدة شكل! ({{Data}})',
       ],
+      links: [['drawData', '🖼️ شوف رسومات الناس ↗']],
     },
     en: {
       name: 'Draw', title: 'Draw… and the computer guesses', story: 'The computer tries to guess your drawing while you are still drawing!',
@@ -43,7 +46,9 @@ export const MISSIONS = [
         "Press [[Let's Draw!]] — you get a word, draw it in 20 seconds.",
         '6 drawings… and the computer says its guesses out loud.',
         'At the end: tap your drawing and see other people\'s drawings of the same word. 🤔 How did it know?',
+        '🖼️ Want to see what the computer learned from? Tap the green button and pick a word (cat) — thousands of drawings, all different! ({{Data}})',
       ],
+      links: [['drawData', '🖼️ See everyone\'s drawings ↗']],
     },
     tool: 'draw',
   },
