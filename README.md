@@ -49,3 +49,8 @@ npm test
 
 ## Credits
 Maze levels follow Blockly Games Maze (google/blockly-games, Apache-2.0). Blockly © Google, Apache-2.0.
+
+## MakeCode Arcade tutorials
+`pxt.json` + `s06-prototype.md` at the repo root are a MakeCode project, so Arcade can open our tutorials straight from this repo:
+`https://arcade.makecode.com/#tutorial:https://github.com/Mohamed-Abdelkarem/academy/s06-prototype`
+MakeCode reads the **master** branch, not main. After changing a tutorial: `git push origin HEAD:main HEAD:master`. New tutorial files must be added to `files` in `pxt.json`.
