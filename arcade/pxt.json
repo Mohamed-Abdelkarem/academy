@@ -1,0 +1,13 @@
+{
+    "name": "academy-arcade",
+    "version": "0.0.1",
+    "description": "دروس سُلحفى في MakeCode Arcade",
+    "dependencies": {
+        "device": "*"
+    },
+    "files": [
+        "main.ts",
+        "README.md"
+    ],
+    "preferredEditor": "blocksprj"
+}
