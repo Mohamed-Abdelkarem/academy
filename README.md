@@ -53,7 +53,7 @@ Maze levels follow Blockly Games Maze (google/blockly-games, Apache-2.0). Blockl
 ## MakeCode Arcade tutorials
 `pxt.json` + `s06-prototype.md` at the repo root are a MakeCode project, so Arcade can open our tutorials straight from this repo:
 `https://arcade.makecode.com/#tutorial:https://github.com/Mohamed-Abdelkarem/academy/s06-prototype`
-MakeCode reads the **master** branch, not main. After changing a tutorial: `git push origin HEAD:main HEAD:master`. New tutorial files must be added to `files` in `pxt.json`.
+MakeCode reads the **master** branch, not main. It also caches each tutorial file for a long time (an edit to `s06-prototype` was still not showing hours later): to publish an edit right away while developing, save it under a new file name (e.g. `s06b`), add it to `pxt.json`, and send the new link. The S6 tutorial now lives at `s06`. After changing a tutorial: `git push origin HEAD:main HEAD:master`. New tutorial files must be added to `files` in `pxt.json`.
 Writing rules learned from Mohamed's review (Nov 28):
 - Always link with `?lang=en`. In Arabic UI MakeCode draws the hint pictures of blocks broken (RTL text over LTR shapes), and our rule is English block names anyway. Our Arabic stays in the tutorial text.
 - Name a toolbox section by its English name as a coloured snippet (red underline + icon, like the toolbox) + the Arabic meaning, never by colour: `افتح قسم ``||controller:Controller||`` (التحكّم)`. The kid learns the term, not "the red one". No extra emoji next to it.
