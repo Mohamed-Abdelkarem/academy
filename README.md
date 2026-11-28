@@ -56,5 +56,6 @@ Maze levels follow Blockly Games Maze (google/blockly-games, Apache-2.0). Blockl
 MakeCode reads the **master** branch, not main. After changing a tutorial: `git push origin HEAD:main HEAD:master`. New tutorial files must be added to `files` in `pxt.json`.
 Writing rules learned from Mohamed's review (Nov 28):
 - Always link with `?lang=en`. In Arabic UI MakeCode draws the hint pictures of blocks broken (RTL text over LTR shapes), and our rule is English block names anyway. Our Arabic stays in the tutorial text.
-- Name a toolbox section with a coloured snippet: ``||controller:القسم الأحمر||`` (red underline + icon, like the toolbox), then the English name ``||controller:Controller||`` on its own line. No extra emoji next to it.
+- Name a toolbox section by its English name as a coloured snippet (red underline + icon, like the toolbox) + the Arabic meaning, never by colour: `افتح قسم ``||controller:Controller||`` (التحكّم)`. The kid learns the term, not "the red one". No extra emoji next to it.
+- Arabic meanings (same everywhere, slides too): Sprites = الشخصيات · Controller = التحكّم · Scene = المشهد · Game = اللعبة · Info = المعلومات (النقط والأرواح) · Loops = التكرار · Logic = الشروط · Variables = المتغيّرات · Math = الحساب · Music = الموسيقى.
 - Wrap every Arabic paragraph (and dialog titles) in U+2067 … U+2069 so "!" and "?" sit at the end in the left-aligned English UI.
