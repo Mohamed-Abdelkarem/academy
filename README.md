@@ -59,3 +59,8 @@ Writing rules learned from Mohamed's review (Nov 28):
 - Name a toolbox section by its English name as a coloured snippet (red underline + icon, like the toolbox) + the Arabic meaning, never by colour: `افتح قسم ``||controller:Controller||`` يعني ``||controller:التحكّم||``` — the Arabic meaning gets the same chip (bold, underline, icon), so the kid sees one shape in two languages. The kid learns the term, not "the red one". No extra emoji next to it.
 - Arabic meanings (same everywhere, slides too): Sprites = الشخصيات · Controller = التحكّم · Scene = المشهد · Game = اللعبة · Info = المعلومات (النقط والأرواح) · Loops = التكرار · Logic = الشروط · Variables = المتغيّرات · Math = الحساب · Music = الموسيقى.
 - Wrap every Arabic paragraph (and dialog titles) in U+2067 … U+2069 so "!" and "?" sit at the end in the left-aligned English UI.
+
+MakeCode behaviour to know (traced in its code, Nov 28):
+- Every open of a tutorial link creates a **new project** (the tutorial is copied in). In class each kid opens the link once, then continues from **My Projects**. Edits to a tutorial never reach projects already created.
+- Re-opening the **same** link in the same browser can fail ("Please check your internet connection…" / "Tutorial … not found"): MakeCode's local cache of the repo's latest commit is stale, so it looks for the file in an old snapshot. First open on a browser works. So the lesson page tells kids: first time → button, after that → My Projects.
+- The project's name in My Projects comes from `name` in `pxt.json`.
