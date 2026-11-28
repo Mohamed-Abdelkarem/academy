@@ -7,7 +7,8 @@
     },
     "files": [
         "s06-prototype.md",
-        "s06.md"
+        "s06.md",
+        "s06b.md"
     ],
     "preferredEditor": "blocksprj"
 }
