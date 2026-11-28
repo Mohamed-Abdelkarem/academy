@@ -6,7 +6,8 @@
         "device": "*"
     },
     "files": [
-        "s06-prototype.md"
+        "s06-prototype.md",
+        "s06.md"
     ],
     "preferredEditor": "blocksprj"
 }
