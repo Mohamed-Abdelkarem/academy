@@ -3,7 +3,7 @@
 ### @explicitHints true
 ### @diffs true
 
-## أهلًا يا مبرمج! @showdialog
+## ⁧أهلًا يا مبرمج!⁩ @showdialog
 
 ⁧سُلحفى 🐢 واقف في البحر ومش بيتحرك 😴⁩
 
@@ -13,7 +13,7 @@
 
 ⁧سُلحفى واقف مكانه 😴⁩
 
-⁧افتح ``||controller:القسم الأحمر||`` 🎮⁩
+⁧افتح ``||controller:القسم الأحمر||``⁩
 
 ``||controller:Controller||``
 
@@ -54,7 +54,7 @@ controller.moveSprite(mySprite)
 
 ⁧نخلّي سُلحفى يفضل جوه الشاشة⁩
 
-⁧افتح ``||sprites:القسم الأزرق||`` ✈️⁩
+⁧افتح ``||sprites:القسم الأزرق||``⁩
 
 ``||sprites:Sprites||``
 
@@ -94,9 +94,9 @@ mySprite.setStayInScreen(true)
 
 ⁧آخر حاجة: **لما** تدوس المسطرة سُلحفى يطلّع قلوب ❤️⁩
 
-⁧من ``||controller:القسم الأحمر||`` 🎮 اسحب البلوك الكبير⁩
+⁧من ``||controller:القسم الأحمر||`` اسحب البلوك الكبير⁩
 
-⁧من ``||sprites:القسم الأزرق||`` ✈️ حط البلوك الصغير **جوّاه**⁩
+⁧من ``||sprites:القسم الأزرق||`` حط البلوك الصغير **جوّاه**⁩
 
 ```blocks
 scene.setBackgroundColor(9)
@@ -125,7 +125,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 ```
 
-## مبروك! 🎉 @showdialog
+## ⁧مبروك! 🎉⁩ @showdialog
 
 ⁧سُلحفى بيتحرك بأوامرك، وبيطلّع قلوب لما تدوس المسطرة ❤️⁩
 
